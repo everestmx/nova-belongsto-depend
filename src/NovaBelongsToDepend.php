@@ -169,6 +169,7 @@ class NovaBelongsToDepend extends BelongsTo
         }
 
         $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
+
         if ($value) {
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
