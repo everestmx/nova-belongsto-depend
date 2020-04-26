@@ -1,12 +1,12 @@
 <?php
 
-namespace Orlyapps\NovaBelongsToDepend\Http\Controllers;
+namespace Everestmx\NovaBelongsToDepend\Http\Controllers;
 
 use \Illuminate\Http\Resources\MergeValue;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
+use Everestmx\NovaBelongsToDepend\NovaBelongsToDepend;
 
 class FieldController extends Controller
 {
@@ -47,7 +47,7 @@ class FieldController extends Controller
 
         return $result;
     }
-    
+
     public function returnFields($fields) {
         return collect($fields)->map(function ($field) {
             if (isset($field->data)) {
@@ -57,7 +57,7 @@ class FieldController extends Controller
             } elseif (isset($field->fields)) {
                 return $this->returnFields($field->fields);
             }
-            
+
             return $field;
         })->flatten();
     }

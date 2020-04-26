@@ -1,12 +1,16 @@
 <?php
 
-namespace Orlyapps\NovaBelongsToDepend;
+namespace Everestmx\NovaBelongsToDepend;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Class FieldServiceProvider
+ * @package Everestmx\NovaBelongsToDepend
+ */
 class FieldServiceProvider extends ServiceProvider
 {
     /**
@@ -48,7 +52,7 @@ class FieldServiceProvider extends ServiceProvider
         }
 
         Route::middleware(['nova'])
-                ->prefix('nova-vendor/nova-belongsto-depend')
-                ->group(__DIR__ . '/../routes/api.php');
+            ->prefix('nova-vendor/nova-belongsto-depend')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 }

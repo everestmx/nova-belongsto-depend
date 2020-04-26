@@ -1,6 +1,6 @@
 <?php
 
-namespace Orlyapps\NovaBelongsToDepend;
+namespace Everestmx\NovaBelongsToDepend;
 
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
@@ -10,28 +10,25 @@ use Laravel\Nova\Fields\ResourceRelationshipGuesser;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 
+/**
+ * Class NovaBelongsToDepend
+ * @package Everestmx\NovaBelongsToDepend
+ */
 class NovaBelongsToDepend extends BelongsTo
 {
     use FormatsRelatableDisplayValues;
 
     public $resourceParentClass;
-
     public $modelClass;
     public $modelPrimaryKey;
     public $foreignKeyName;
-
     public $valueKey;
-
     public $titleKey;
-
     public $dependKey;
     public $dependsOn;
-
     public $optionResolveCallback = null;
     public $options = [];
-
     public $fallback;
-
     public $showLinkToResourceFromDetail = true;
     public $showLinkToResourceFromIndex = true;
 
@@ -42,70 +39,115 @@ class NovaBelongsToDepend extends BelongsTo
      */
     public $component = 'nova-belongsto-depend';
 
+    /**
+     * NovaBelongsToDepend constructor.
+     * @param $name
+     * @param null $attribute
+     * @param null $resource
+     */
     public function __construct($name, $attribute = null, $resource = null)
     {
         $resource = $resource ?? ResourceRelationshipGuesser::guessResource($name);
+
         parent::__construct($name, $attribute, $resource);
 
         $this->modelClass = get_class($resource::newModel());
         $this->modelPrimaryKey = $resource::newModel()->getKeyName();
         $this->titleKey = $resource::$title;
+
         $this->optionResolveCallback = function () {
             return [];
         };
     }
 
+    /**
+     * @param string $placeholder
+     * @return $this
+     */
     public function placeholder(string $placeholder)
     {
         $this->withMeta(['placeholder' => $placeholder]);
         return $this;
     }
 
+    /**
+     * @param string $openDirection
+     * @return $this
+     */
     public function openDirection(string $openDirection)
     {
         $this->withMeta(['openDirection' => $openDirection]);
         return $this;
     }
 
+    /**
+     * @param $options
+     * @return $this
+     */
     public function options($options)
     {
         $this->options = collect($options);
         return $this;
     }
 
+    /**
+     * @param $callback
+     * @return $this
+     */
     public function optionsResolve($callback)
     {
         $this->optionResolveCallback = $callback;
         return $this;
     }
 
+    /**
+     * @param $relationship
+     * @return $this
+     */
     public function dependsOn($relationship)
     {
         $this->dependsOn = Str::lower($relationship);
         return $this;
     }
 
+    /**
+     * @param $fallback
+     * @return $this
+     */
     public function fallback($fallback)
     {
         $this->fallback = $fallback;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function hideLinkToResourceFromDetail()
     {
         $this->showLinkToResourceFromDetail = false;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function hideLinkToResourceFromIndex()
     {
         $this->showLinkToResourceFromIndex = false;
         return $this;
     }
 
+    /**
+     * @param mixed $resource
+     * @param null $attribute
+     * @return $this|void
+     * @throws \ReflectionException
+     */
     public function resolve($resource, $attribute = null)
     {
         $testInstance = new \ReflectionClass($resource);
+
         if ($testInstance->isAnonymous()) {
             return $this;
         }
@@ -116,6 +158,7 @@ class NovaBelongsToDepend extends BelongsTo
         }
 
         parent::resolve($resource, $attribute);
+
         $this->resourceParentClass = get_class(Nova::newResourceFromModel($resource));
 
         $foreign = $resource->{$this->attribute}();
@@ -155,8 +198,8 @@ class NovaBelongsToDepend extends BelongsTo
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  object  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param object $model
      * @return mixed
      */
     public function fillForAction(NovaRequest $request, $model)
@@ -197,6 +240,9 @@ class NovaBelongsToDepend extends BelongsTo
         return $this->getRelationForeignKeyName($request->newResource()->resource->{$this->attribute}());
     }
 
+    /**
+     * @return array
+     */
     public function meta()
     {
         $this->meta = parent::meta();
