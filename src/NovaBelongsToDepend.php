@@ -64,7 +64,7 @@ class NovaBelongsToDepend extends BelongsTo
      * @param string $placeholder
      * @return $this
      */
-    public function placeholder(string $placeholder)
+    public function placeholder($placeholder)
     {
         $this->withMeta(['placeholder' => $placeholder]);
         return $this;
